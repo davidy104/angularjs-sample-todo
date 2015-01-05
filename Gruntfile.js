@@ -1,6 +1,8 @@
 // Generated on 2015-01-05 using generator-angular 0.10.0
 'use strict';
 
+var mw = require('./middlewares.js');
+
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
@@ -75,14 +77,14 @@ module.exports = function (grunt) {
         options: {
           open: true,
           middleware: function (connect) {
-            return [
+            return mw( connect, [
               connect.static('.tmp'),
               connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
+                  '/bower_components',
+                  connect.static('./bower_components')
               ),
               connect.static(appConfig.app)
-            ];
+            ] );
           }
         }
       },

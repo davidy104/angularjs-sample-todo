@@ -1,17 +1,33 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name todoApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the todoApp
- */
 angular.module('todoApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+    .controller('TodoCtrl', function ($scope, $resource) {
+      $scope.todos = [];
+      $scope.newTodo = '';
+      var Task = $resource('/api/v1/todo/:taskId',{taskId:'@id'});
+      var update = function(){
+        Task.query(function(data){
+          $scope.todos = data;
+        });
+      };
+      update();
+      $scope.add = function( event ) {
+        if( event.keyCode === 13 ) {
+          var t = new Task({text:$scope.newTodo});
+          t.$save(function(){
+            update();
+            $scope.newTodo = '';
+          });
+        }
+      };
+      $scope.save = function( event, todo ){
+        if( event.keyCode === 13 ){
+          todo.$save();
+        }
+      };
+      $scope.done = function( todo ){
+        todo.$delete().then(update);
+      };
+    })
+    .controller('MainCtrl', function () {
+    });
