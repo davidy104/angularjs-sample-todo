@@ -2,16 +2,10 @@
 
   <div class="row">
     <!-- 'track by todo.id' meaing only track new one-->
-    <div class="col-md-12 task" ng-repeat="todo in todos track by todo.id">
-      <button ng-click="done(todo)" class="btn btn-xs btn-danger">Done</button>
-      <input type="text" ng-model="todo.text" ng-keyup="save($event, todo)">
+    <div class="col-md-12 task" ng-repeat="todo in todos track by todo.id" todo="todo">
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <input type="text" ng-model="newTodo" ng-keyup="add($event)">
-    </div>
-  </div>
+<newtodo size="x-large"></newtodo>
 </div>
 
