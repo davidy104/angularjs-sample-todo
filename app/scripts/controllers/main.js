@@ -13,7 +13,7 @@ angular.module('todoApp')
       update();
       $scope.add = function( event ) {
         if( event.keyCode === 13 ) {
-          api.add($scope.newTodo,function(){
+          api.add($scope.newTodo).then(function(){
             update();
             $scope.newTodo = '';
           });
@@ -21,11 +21,11 @@ angular.module('todoApp')
       };
       $scope.save = function( event, todo ){
         if( event.keyCode === 13 ){
-          api.update( todo, update );
+          api.update( todo).then( update );
         }
       };
       $scope.done = function( todo ){
-        api.delete(todo, update);
+        api.delete( todo).then( update );
       };
     })
     .controller('MainCtrl', function () {

@@ -14,7 +14,7 @@ angular.module('todo',[])
                 });
                 return deferred.promise;
             },
-            add: function( text, cb ) {
+            add: function( text ) {
                 var deferred = $q.defer();
                 var t = new Task({text:text});
                 t.$save(function(){
@@ -22,11 +22,19 @@ angular.module('todo',[])
                 });
                 return deferred.promise;
             },
-            delete: function( todo, cb ){
-                todo.$delete().then(cb);
+            delete: function( todo ){
+                var deferred = $q.defer();
+                todo.$delete().then(function(){
+                    deferred.resolve();
+                });
+                return deferred.promise;
             },
-            update: function( todo, cb ){
-                todo.$save().then(cb);
+            update: function( todo ){
+                var deferred = $q.defer();
+                todo.$save().then(function(){
+                    deferred.resolve();
+                });
+                return deferred.promise;
             }
         };
     });
