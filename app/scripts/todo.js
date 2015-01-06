@@ -4,19 +4,23 @@
 'use strict';
 
 angular.module('todo',[])
-    .factory('api', function( $resource ){
+    .factory('api', function( $resource, $q ){
         var Task = $resource('/api/v1/todo/:taskId',{taskId:'@id'});
         return {
-            get: function( cb ) {
+            get: function() {
+                var deferred = $q.defer();
                 Task.query(function(data){
-                    cb(data);
+                    deferred.resolve(data);
                 });
+                return deferred.promise;
             },
             add: function( text, cb ) {
+                var deferred = $q.defer();
                 var t = new Task({text:text});
                 t.$save(function(){
-                    cb();
+                    deferred.resolve();
                 });
+                return deferred.promise;
             },
             delete: function( todo, cb ){
                 todo.$delete().then(cb);

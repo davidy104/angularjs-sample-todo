@@ -6,7 +6,7 @@ angular.module('todoApp')
       $scope.newTodo = '';
 
       var update = function(){
-        api.get(function(data){
+        api.get().then(function(data){
           $scope.todos = data;
         });
       };
