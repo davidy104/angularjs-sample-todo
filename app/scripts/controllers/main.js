@@ -1,20 +1,19 @@
 'use strict';
 
 angular.module('todoApp')
-    .controller('TodoCtrl', function ($scope, $resource) {
+    .controller('TodoCtrl', function ($scope, $resource, api) {
       $scope.todos = [];
       $scope.newTodo = '';
-      var Task = $resource('/api/v1/todo/:taskId',{taskId:'@id'});
+
       var update = function(){
-        Task.query(function(data){
+        api.get(function(data){
           $scope.todos = data;
         });
       };
       update();
       $scope.add = function( event ) {
         if( event.keyCode === 13 ) {
-          var t = new Task({text:$scope.newTodo});
-          t.$save(function(){
+          api.add($scope.newTodo,function(){
             update();
             $scope.newTodo = '';
           });
@@ -22,11 +21,11 @@ angular.module('todoApp')
       };
       $scope.save = function( event, todo ){
         if( event.keyCode === 13 ){
-          todo.$save();
+          api.update( todo, update );
         }
       };
       $scope.done = function( todo ){
-        todo.$delete().then(update);
+        api.delete(todo, update);
       };
     })
     .controller('MainCtrl', function () {
