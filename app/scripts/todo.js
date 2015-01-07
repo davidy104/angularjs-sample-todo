@@ -7,6 +7,13 @@ angular.module('todo',[])
     .factory('api', function( $resource, $q ){
         var Task = $resource('/api/v1/todo/:taskId',{taskId:'@id'});
         return {
+            getOne: function( id ) {
+                var deferred = $q.defer();
+                Task.get({taskId:id},function(data){
+                    deferred.resolve(data);
+                });
+                return deferred.promise;
+            },
             get: function() {
                 var deferred = $q.defer();
                 Task.query(function(data){
