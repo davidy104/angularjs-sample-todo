@@ -6,10 +6,12 @@
 angular.module('todo',[])
     .factory('api', function( $resource, $q ){
         var Task = $resource('/api/v1/todo/:taskId',{taskId:'@id'});
-        return {
+        var self = {
+            currentItem: null,
             getOne: function( id ) {
                 var deferred = $q.defer();
                 Task.get({taskId:id},function(data){
+                    self.currentItem = data;
                     deferred.resolve(data);
                 });
                 return deferred.promise;
@@ -36,12 +38,13 @@ angular.module('todo',[])
                 });
                 return deferred.promise;
             },
-            update: function( todo ){
+            update: function( todo ) {
                 var deferred = $q.defer();
-                todo.$save().then(function(){
+                todo.$save().then(function () {
                     deferred.resolve();
                 });
                 return deferred.promise;
             }
         };
+        return self;
     });
